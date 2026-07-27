@@ -1,0 +1,10 @@
+checkpoint*
+*.mov
+*.py
+script_rebuilt.js
+update.js
+checkpoints/
+letters/
+pairings/
+.DS_Store
+.vscode/

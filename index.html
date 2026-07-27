@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SKIP LABS — Control Room</title>
+  <link rel="stylesheet" href="style.css?v=3" />
+</head>
+
+<body>
+
+  <div class="control-room">
+
+    <!-- LEFT PANEL: 25% width, controls + logo -->
+    <div class="panel panel-left">
+
+      <div class="logo-wrap">
+        <img src="images/labs-logo.svg" alt="Skip Labs" class="logo" />
+        <div class="brand-word" id="brandWord">KLIP BAS</div>
+      </div>
+
+      <div class="word-input-wrap">
+        <textarea id="wordsInput" class="word-input" placeholder="Your words" rows="2" autocomplete="off"></textarea>
+      </div>
+
+      <div class="font-size-wrap">
+        <div class="section-label">Font Size</div>
+        <input type="range" id="fontSizeSlider" class="font-size-slider" min="0.4" max="2.5" step="0.05" value="1" />
+      </div>
+
+      <div class="line-thickness-wrap">
+        <div class="section-label">Line Thickness</div>
+        <input type="range" id="lineThicknessSlider" class="font-size-slider" min="0.1" max="5" step="0.1" value="1" />
+      </div>
+
+      <div class="multiply-wrap">
+        <div class="section-label">Multiply</div>
+
+        <input type="range" id="multiplySlider" class="multiply-slider" min="1" max="50" step="1" value="1" />
+
+        <div class="style-buttons" id="styleButtons">
+          <button class="style-btn" data-style="wave" type="button">
+            <img class="close-icon" src="images/close-button.svg" alt="Remove style" />
+            <img class="style-icon" src="images/wave-lines.svg" alt="Wave style" />
+          </button>
+          <button class="style-btn" data-style="sharp" type="button">
+            <img class="close-icon" src="images/close-button.svg" alt="Remove style" />
+            <img class="style-icon" src="images/sharp-lines.svg" alt="Sharp style" />
+          </button>
+          <button class="style-btn" data-style="dots" type="button">
+            <img class="close-icon" src="images/close-button.svg" alt="Remove style" />
+            <img class="style-icon" src="images/dots-lines.svg" alt="Dots style" />
+          </button>
+          <button class="style-btn" data-style="emoji" type="button">
+            <img class="close-icon" src="images/close-button.svg" alt="Remove style" />
+            <img class="style-icon" src="images/emoji-lines.svg" alt="Emoji style" />
+          </button>
+        </div>
+      </div>
+
+      <div class="edit-wrap">
+        <div class="section-label">Edit Typeface</div>
+        <div class="edit-buttons">
+          <button id="editModeBtn" class="action-btn edit-toggle-btn" type="button">Edit Mode</button>
+          <button id="moveModeBtn" class="action-btn move-toggle-btn" type="button">Move Letter</button>
+          <button id="deleteNodeBtn" class="action-btn delete-btn" type="button" disabled>Delete Node</button>
+          <button id="deleteCircleBtn" class="action-btn delete-circle-btn" type="button" disabled>Delete
+            Circle</button>
+          <button id="saveLetterBtn" class="action-btn save-btn" type="button">Save Letter</button>
+          <button id="connectEndNodesBtn" class="action-btn connect-btn" type="button">Connect End Nodes</button>
+          <button id="undoBtn" class="action-btn undo-btn" type="button" disabled>Undo</button>
+          <button id="exportShapesBtn" class="action-btn export-btn" type="button">Export JS</button>
+          <button id="removeGuidesBtn" class="action-btn remove-guides-btn" type="button">Remove Guides</button>
+        </div>
+      </div>
+
+      <div class="edit-wrap constant-wrap">
+        <div class="section-label">Constant Nodes Mode</div>
+        <div class="edit-buttons" style="display: flex; flex-direction: column; gap: 8px; width: 100%;">
+          <button id="constantModeBtn" class="action-btn constant-toggle-btn" type="button" style="width: 100%;">Set
+            Constant Nodes</button>
+          <select id="constantLetterSelect" class="pair-select" style="width: 100%;"></select>
+        </div>
+      </div>
+
+      <div class="edit-wrap pair-wrap">
+        <div class="section-label">Pair Editing Mode</div>
+        <div class="edit-buttons">
+          <button id="pairModeBtn" class="action-btn pair-toggle-btn" type="button">Pair Mode</button>
+        </div>
+
+        <div id="pairControls" class="pair-controls">
+          <div class="pair-row">
+            <select id="pairPrimarySelect" class="pair-select"></select>
+            <div id="pairLabel" class="pair-label">a - a</div>
+          </div>
+          <div class="edit-buttons pair-action-buttons">
+            <button id="prevPairBtn" class="action-btn prev-pair-btn" type="button">Previous Pair</button>
+            <button id="definePairBtn" class="action-btn define-pair-btn" type="button">Define Pair</button>
+            <button id="nextPairBtn" class="action-btn next-pair-btn" type="button">Next Pair</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <!-- Sliders and controls will go here, fed step by step -->
+      </div>
+
+    </div>
+
+    <!-- RIGHT PANEL: 75% width, preview -->
+    <div class="panel panel-right">
+      <div class="preview-area" id="previewArea">
+        <!-- p5.js injects its <canvas> in here -->
+      </div>
+    </div>
+
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.min.js"></script>
+  <script src="pairings.js"></script>
+  <script src="script.js?v=5"></script>
+</body>
+
+</html>

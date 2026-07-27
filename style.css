@@ -1,0 +1,397 @@
+@font-face {
+  font-family: 'CommunityGothic';
+  src: url('font_family/CommunityGothic-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'CommunityGothic';
+  src: url('font_family/CommunityGothic-Black.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  font-family: 'CommunityGothic', sans-serif;
+  overflow: hidden;
+  background-color: #ffffff;
+}
+
+.control-room {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  padding: 15px;
+  gap: 15px;
+  background-color: #ffffff;
+}
+
+.panel {
+  background-color: #f1f2f2;
+}
+
+/* LEFT PANEL — 25% of available width (ratio-based so the gap doesn't cause overflow) */
+.panel-left {
+  flex: 1 1 0;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding-bottom: 30px;
+}
+
+/* RIGHT PANEL — 75% of available width */
+.panel-right {
+  flex: 3 1 0;
+  height: 100%;
+  position: relative;
+}
+
+/* Logo sits at top of left panel, touching left/right edges, 20px top padding */
+.logo-wrap {
+  width: 100%;
+  padding-top: 20px;
+  position: relative;
+}
+
+.logo {
+  width: 100%;
+  height: auto;
+  display: block;
+  position: relative;
+  z-index: 2; /* logo sits on top of the red text */
+}
+
+/* Animated red word, centered behind the logo */
+.brand-word {
+  position: absolute;
+  top: 20px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1; /* sits behind the logo */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-family: 'CommunityGothic', sans-serif;
+  font-weight: 900;
+  color: #ea3323;
+  font-size: 2.4rem;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+}
+
+.controls {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.preview-area {
+  width: 100%;
+  height: 100%;
+}
+
+/* Word input box, sits right below the logo */
+.word-input-wrap {
+  padding: 0 20px;
+  margin-top: 24px;
+}
+
+.word-input {
+  width: 100%;
+  background-color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 14px 20px;
+  font-family: 'CommunityGothic', sans-serif;
+  font-weight: 400;
+  font-size: 1.1rem;
+  color: #000000;
+  outline: none;
+  resize: none;
+  max-height: 120px;
+}
+
+.word-input::placeholder {
+  color: #c0c0c0;
+}
+
+/* Font size section */
+.font-size-wrap {
+  padding: 16px 20px 0 20px;
+}
+
+.font-size-slider {
+  width: 100%;
+  accent-color: #000000;
+}
+
+/* Multiply section */
+.multiply-wrap {
+  padding: 16px 20px 0 20px;
+}
+
+.section-label {
+  font-family: 'CommunityGothic', sans-serif;
+  font-weight: 400;
+  font-size: 1.3rem;
+  color: #000000;
+  margin-bottom: 12px;
+}
+
+.multiply-slider {
+  width: 100%;
+  margin-bottom: 16px;
+  accent-color: #000000;
+}
+
+.style-buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.style-btn {
+  position: relative;
+  background-color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.style-btn .style-icon {
+  width: 78%;
+  height: auto;
+}
+
+.style-btn .close-icon {
+  display: none;
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  width: 20px;
+  height: 20px;
+  z-index: 2;
+}
+
+.style-btn.selected .close-icon {
+  display: block;
+}
+
+/* Edit Typeface section */
+.edit-wrap {
+  padding: 16px 20px 0 20px;
+}
+
+.edit-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.action-btn {
+  font-family: 'CommunityGothic', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 900;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 8px;
+  background-color: #ffffff;
+  color: #000000;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s, opacity 0.2s;
+  flex: 1 1 auto;
+  text-align: center;
+}
+
+.action-btn:hover:not(:disabled) {
+  background-color: #e0e0e0;
+}
+
+.action-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.edit-toggle-btn.active {
+  background-color: #ea3323;
+  color: #ffffff;
+}
+
+.move-toggle-btn.active {
+  background-color: #2a7fff;
+  color: #ffffff;
+}
+
+.constant-toggle-btn.active {
+  background-color: #ffa500;
+  color: #ffffff;
+}
+
+.remove-guides-btn.active {
+  background-color: #ea3323;
+  color: #ffffff;
+}
+
+.delete-btn:hover:not(:disabled) {
+  background-color: #ff4d4d;
+  color: #ffffff;
+}
+
+.delete-circle-btn:hover:not(:disabled) {
+  background-color: #ff9800;
+  color: #ffffff;
+}
+
+.save-btn {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.save-btn:hover:not(:disabled) {
+  background-color: #333333;
+}
+
+.save-btn.saved-flash {
+  background-color: #2e7d32;
+  color: #ffffff;
+}
+
+.connect-btn {
+  background-color: #00897b;
+  color: #ffffff;
+}
+
+.connect-btn:hover:not(:disabled) {
+  background-color: #00695c;
+}
+
+.undo-btn {
+  background-color: #ff9800;
+  color: #ffffff;
+}
+
+.undo-btn:hover:not(:disabled) {
+  background-color: #f57c00;
+}
+
+.export-btn {
+  background-color: #4a148c;
+  color: #ffffff;
+}
+
+.export-btn:hover:not(:disabled) {
+  background-color: #6a1b9a;
+}
+
+.reset-btn:hover:not(:disabled) {
+  background-color: #757575;
+  color: #ffffff;
+}
+
+/* Pair Editing Mode Section */
+.pair-wrap {
+  margin-top: 8px;
+}
+
+.pair-toggle-btn.active {
+  background-color: #9c27b0;
+  color: #ffffff;
+}
+
+.pair-controls {
+  margin-top: 12px;
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pair-controls.visible {
+  display: flex !important;
+}
+
+.pair-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pair-select {
+  flex: 1;
+  font-family: 'CommunityGothic', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  background-color: #ffffff;
+  color: #000000;
+  cursor: pointer;
+  outline: none;
+}
+
+.pair-label {
+  font-family: 'CommunityGothic', sans-serif;
+  font-weight: 900;
+  font-size: 1.2rem;
+  color: #000000;
+  background-color: #ffffff;
+  padding: 6px 14px;
+  border-radius: 8px;
+  min-width: 80px;
+  text-align: center;
+}
+
+.pair-action-buttons {
+  display: flex;
+  gap: 6px;
+}
+
+.define-pair-btn {
+  background-color: #4caf50;
+  color: #ffffff;
+}
+
+.define-pair-btn:hover:not(:disabled) {
+  background-color: #388e3c;
+}
+
+.prev-pair-btn, .next-pair-btn {
+  background-color: #607d8b;
+  color: #ffffff;
+}
+
+.prev-pair-btn:hover:not(:disabled), .next-pair-btn:hover:not(:disabled) {
+  background-color: #455a64;
+}
+
+/* Preview area — p5.js canvas fills this completely */
+.preview-area {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.preview-area canvas {
+  display: block;
+}
+
