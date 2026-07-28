@@ -114,14 +114,17 @@ function loadCustomLetterShapes() {
         }
       });
 
-      // Reset 'd' so local storage does not overwrite the updated SVG letter shape
-      if (parsed.d) {
-        delete parsed.d;
-        updatedAny = true;
-      }
+      // Reset 'd', quotes, dash, @, &, (, and ) so local storage does not overwrite the updated SVG letter shapes
+      const resetKeys = ['d', '"', '“', '”', '—', '–', '@', '&', '(', ')'];
+      resetKeys.forEach(k => {
+        if (parsed[k]) {
+          delete parsed[k];
+          updatedAny = true;
+        }
+      });
 
       if (updatedAny) {
-        localStorage.setItem("skip_custom_letter_shapes_v3", JSON.stringify(parsed));
+        localStorage.setItem("skip_custom_letter_shapes_v4", JSON.stringify(parsed));
       }
 
       Object.assign(LETTER_SHAPES, parsed);
@@ -351,11 +354,20 @@ function easeInOutQuad(t) {
 // Only characters with a defined shape count toward the word;
 // everything else (spaces, digits, unsupported letters) is skipped.
 function getLinesOfKeysFromInput(value) {
+  let doubleQuoteCount = 0;
   return value.split("\n").map(line => {
     const keys = [];
     for (const ch of line) {
       if (ch === " ") {
         keys.push(" ");
+      } else if (ch === '"') {
+        const smartQuoteKey = (doubleQuoteCount % 2 === 0) ? "“" : "”";
+        doubleQuoteCount++;
+        if (LETTER_SHAPES[smartQuoteKey]) {
+          keys.push(smartQuoteKey);
+        } else if (LETTER_SHAPES['"']) {
+          keys.push('"');
+        }
       } else if (LETTER_SHAPES[ch]) {
         keys.push(ch);
       }
@@ -400,8 +412,6 @@ function computeLayout(linesOfWordKeys) {
       let primary_pts = base_pts;
       if (pts_next !== base_pts) {
         primary_pts = pts_next;
-      } else if (pts_prev !== base_pts) {
-        primary_pts = pts_prev;
       }
 
       let pts = primary_pts;
@@ -575,6 +585,7 @@ function computeLayout(linesOfWordKeys) {
         if (i > 0 && !metas[i - 1].isSpace) {
           const prevKey = metas[i - 1].key;
           const pairKey = prevKey + "-" + m.key;
+
           if (PAIR_SHAPES[pairKey]) {
             if (PAIR_SHAPES[pairKey].offset !== undefined) {
               stepFromPrev = PAIR_SHAPES[pairKey].offset;
@@ -666,6 +677,26 @@ function computeLayout(linesOfWordKeys) {
                       p2.y = my;
                     }
                   }
+                }
+              } else if ((m.key === '.' || m.key === ',') && prevLayout.points.length > 0 && targetPoints.length > 0) {
+                // For fullstop and comma, pull the previous letter's exit node to overlap the dot's entry node
+                let exitScreenPt = null;
+                for (let pi = prevLayout.points.length - 1; pi >= 0; pi--) {
+                  if (!prevLayout.points[pi].isConstant) {
+                    exitScreenPt = prevLayout.points[pi];
+                    break;
+                  }
+                }
+                let entryScreenPt = null;
+                for (let pi = 0; pi < targetPoints.length; pi++) {
+                  if (!targetPoints[pi].isConstant) {
+                    entryScreenPt = targetPoints[pi];
+                    break;
+                  }
+                }
+                if (exitScreenPt && entryScreenPt) {
+                  exitScreenPt.x = entryScreenPt.x;
+                  exitScreenPt.y = entryScreenPt.y;
                 }
               }
             } else {
@@ -1828,7 +1859,7 @@ function loadCustomPairShapes() {
 }
 loadCustomPairShapes();
 
-const ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".split("");
+const ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!?#&()+-@[]^{}*:\"<>;/.,'“”—–".split("");
 let isPairMode = false;
 let pairPrimaryKey = 'a';
 let pairSecondaryIndex = 0;
