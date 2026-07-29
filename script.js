@@ -70,13 +70,14 @@ const VIEW_H = 626;
 const BASE_Y = 313; // vertical center of the canvas
 let anim_time = 700;
 const CONTENT_MARGIN = 40;
+let SPACE_WIDTH = 180;
 const LETTER_GAP = 0;
 const LETTER_PADDING = {
   't': { left: 15, right: 15 },
   'T': { left: 15, right: 15 }
 };
 let userFontSizeScale = 1.0;
-let LINE_SPACING = 350;
+let LINE_SPACING = 500;
 
 const DEFAULT_LETTER_SHAPES = JSON.parse(JSON.stringify(LETTER_SHAPES));
 const BASE_MIN_X = {};
@@ -209,11 +210,14 @@ let previewContainer = null;
 let activeAnim = null;
 let currentWordScale = 1;  // Tracks current layout scale factor for dynamic stroke/dot sizing
 let userStrokeWeightScale = 1; // User controlled line thickness
+let MAX_LINE_THICKNESS = 20; // Global max for line thickness slider
+let userDotSizeScale = 1; // User controlled circle size
+let MAX_CIRCLE_SIZE = 20; // Global max for circle size slider
 let showGuides = true; // Toggle for guide lines
 
 function getScaledDotDiameter() {
   const canvasRatio = width ? (width / VIEW_W) : 1;
-  return 10.504 * currentWordScale * canvasRatio;
+  return 10.504 * currentWordScale * canvasRatio * userDotSizeScale;
 }
 
 function getScaledStrokeWeight() {
@@ -274,8 +278,17 @@ function setup() {
 
   const lineSlider = document.getElementById("lineThicknessSlider");
   if (lineSlider) {
+    lineSlider.max = MAX_LINE_THICKNESS;
     lineSlider.addEventListener("input", (e) => {
       userStrokeWeightScale = parseFloat(e.target.value);
+    });
+  }
+
+  const circleSlider = document.getElementById("circleSizeSlider");
+  if (circleSlider) {
+    circleSlider.max = MAX_CIRCLE_SIZE;
+    circleSlider.addEventListener("input", (e) => {
+      userDotSizeScale = parseFloat(e.target.value);
     });
   }
 
@@ -384,7 +397,7 @@ function computeLayout(linesOfWordKeys) {
   const lineMetas = linesOfWordKeys.map(wordKeys => {
     return wordKeys.map((key, keyIdx) => {
       if (key === " ") {
-        return { key: " ", isSpace: true, width: 30, pts: [] };
+        return { key: " ", isSpace: true, width: SPACE_WIDTH, pts: [] };
       }
 
       let base_pts = LETTER_SHAPES[key] ? JSON.parse(JSON.stringify(LETTER_SHAPES[key])) : [];
@@ -1129,13 +1142,18 @@ function draw() {
                 drawEdge(mapX(a.x), mapY(a.y), mapX(b.x), mapY(b.y), true, edgeIndex++);
               }
             }
-          }
 
-          if (k < lineLetters.length - 1) {
-            const next = lineLetters[k + 1];
-            if (!current.isSpace && !next.isSpace && current.points.length > 0 && next.points.length > 0) {
+            // Find the next non-space letter to connect to
+            let nextNonSpace = null;
+            for (let j = k + 1; j < lineLetters.length; j++) {
+              if (!lineLetters[j].isSpace && lineLetters[j].points.length > 0) {
+                nextNonSpace = lineLetters[j];
+                break;
+              }
+            }
+            if (nextNonSpace) {
               const pLast = getExitPoint(current.points);
-              const pNextFirst = next.points[0];
+              const pNextFirst = nextNonSpace.points[0];
               if (pLast && pNextFirst) {
                 drawEdge(mapX(pLast.x), mapY(pLast.y), mapX(pNextFirst.x), mapY(pNextFirst.y), true, edgeIndex++);
               }
