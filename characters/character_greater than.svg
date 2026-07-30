@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" width="639.9339" height="406.9541" viewBox="0 0 639.9339 406.9541">
+  <polyline points="8.9947 212.355 365.22 212.355 127.0915 90.2083 137.5955 5.252 447.4826 212.355 67.9653 401.7021 82.3063 307.994 501.2523 212.355 634.6819 212.355" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: .63px;"/>
+  <circle cx="501.2523" cy="212.355" r="5.252"/>
+  <circle cx="634.6819" cy="211.9776" r="5.252"/>
+  <circle cx="82.3063" cy="307.994" r="5.252"/>
+  <circle cx="67.9653" cy="401.7021" r="5.252"/>
+  <circle cx="447.4826" cy="212.355" r="5.252"/>
+  <circle cx="137.5955" cy="5.252" r="5.252"/>
+  <circle cx="127.0915" cy="90.2083" r="5.252"/>
+  <circle cx="364.1508" cy="212.355" r="5.252"/>
+  <circle cx="8.9947" cy="212.355" r="5.252"/>
+</svg>
