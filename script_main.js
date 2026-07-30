@@ -701,6 +701,7 @@ function updateAnim() {
   if (activeAnim.kind === "position") {
     for (const entry of activeAnim.entries) {
       letters[entry.letterIndex].points = entry.startPoints.map((p, i) => ({
+        ...p,
         x: p.x + (entry.targetPoints[i].x - p.x) * e,
         y: p.y + (entry.targetPoints[i].y - p.y) * e
       }));
